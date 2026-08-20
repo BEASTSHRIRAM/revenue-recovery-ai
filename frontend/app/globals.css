@@ -21,6 +21,13 @@
   --info-bg: #dbeafe;
   --neutral: #475569;
   --neutral-bg: #f1f5f9;
+
+  /* Categorical chart series — validated palette, slots 1/2/3 (dataviz skill) */
+  --series-1: #2a78d6; /* blue */
+  --series-2: #eb6834; /* orange */
+  --series-3: #1baf7a; /* aqua */
+  --chart-grid: #e2e8f0;
+  --chart-text: #64748b;
 }
 
 @theme inline {
@@ -52,6 +59,12 @@
     --info-bg: #142338;
     --neutral: #94a3b8;
     --neutral-bg: #1a2333;
+
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --chart-grid: #263244;
+    --chart-text: #8b96a8;
   }
 }
 
