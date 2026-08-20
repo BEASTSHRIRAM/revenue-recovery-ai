@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routers import system
+from app.api.routers import agent, analytics, cases, playbooks, system, webhooks
 from app.core.config import settings
 from app.core.logging import configure_logging, get_logger
 
@@ -53,6 +53,11 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(system.router)
+    app.include_router(cases.router)
+    app.include_router(playbooks.router)
+    app.include_router(analytics.router)
+    app.include_router(webhooks.router)
+    app.include_router(agent.router)
 
     return app
 
