@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routers import agent, analytics, cases, playbooks, system, webhooks
 from app.core.config import settings
 from app.core.logging import configure_logging, get_logger
+from app.db.session import init_models
 
 log = get_logger(__name__)
 
@@ -32,6 +33,13 @@ async def lifespan(app: FastAPI):
         settings.effective_payment_provider,
         settings.effective_email_channel,
     )
+    if settings.is_sqlite:
+        # Dev convenience: create tables if they don't exist yet, so booting
+        # the server against a fresh/relocated SQLite file never 500s with
+        # "no such table" just because `python -m app.db.seed` wasn't run
+        # first from the exact same working directory. Postgres deployments
+        # use `alembic upgrade head` instead — see init_models()'s docstring.
+        await init_models()
     yield
     log.info("shutdown complete")
 
