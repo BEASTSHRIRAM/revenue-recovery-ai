@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI):
     log.info("starting revenue-recovery-ai  env=%s", settings.app_env)
     log.info(
         "capabilities  agent=%s  payments=%s  email=%s",
-        "grok" if settings.grok_enabled else "stub",
+        "groq" if settings.groq_enabled else "stub",
         settings.effective_payment_provider,
         settings.effective_email_channel,
     )

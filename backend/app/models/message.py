@@ -31,7 +31,7 @@ class Message(Base, TimestampMixin):
     body: Mapped[str] = mapped_column(String(4000))
 
     generated_by: Mapped[str] = mapped_column(String(40), default="stub")
-    """Model id that produced this draft, e.g. "grok-4.6" or "stub"."""
+    """Model id that produced this draft, e.g. "openai/gpt-oss-120b" or "stub"."""
     guardrail_flags: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
 
     provider_message_id: Mapped[str | None] = mapped_column(String(120))

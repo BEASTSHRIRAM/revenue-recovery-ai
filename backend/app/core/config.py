@@ -39,12 +39,12 @@ class Settings(BaseSettings):
     database_url: str = "sqlite+aiosqlite:///./recovery.db"
     checkpoint_db: str = "./checkpoints.sqlite"
 
-    # ---------- grok / xai ----------
-    xai_api_key: str | None = None
-    grok_model: str = "grok-4.6"
-    grok_temperature: float = 0.2
-    grok_max_retries: int = 2
-    grok_timeout_seconds: int = 60
+    # ---------- groq ----------
+    groq_api_key: str | None = None
+    groq_model: str = "openai/gpt-oss-120b"
+    groq_temperature: float = 0.2
+    groq_max_retries: int = 2
+    groq_timeout_seconds: int = 60
 
     # ---------- payments ----------
     payment_provider: PaymentProviderName = "mock"
@@ -79,9 +79,9 @@ class Settings(BaseSettings):
 
     # ---------- derived capability flags ----------
     @property
-    def grok_enabled(self) -> bool:
-        """True when a real Grok key is present; otherwise the agent uses its stub brain."""
-        return bool(self.xai_api_key and self.xai_api_key.strip())
+    def groq_enabled(self) -> bool:
+        """True when a real Groq key is present; otherwise the agent uses its stub brain."""
+        return bool(self.groq_api_key and self.groq_api_key.strip())
 
     @property
     def razorpay_enabled(self) -> bool:

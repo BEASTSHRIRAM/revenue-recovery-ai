@@ -27,14 +27,14 @@ and escalate. One retry ladder for all of them is why conventional dunning under
 
 - **Frontend** — Next.js 15 (App Router, TypeScript), Tailwind, Recharts
 - **Backend** — FastAPI, Pydantic v2, SQLAlchemy 2 (async)
-- **Agent** — LangGraph, orchestrating **Grok** (`grok-4.6`) via `langchain-xai`
+- **Agent** — LangGraph, orchestrating **Groq** (`openai/gpt-oss-120b`) via `langchain-groq`
 - **Payments** — Razorpay adapter behind a provider interface, plus a mock driver
 - **Data** — SQLite out of the box, one env var away from Postgres
 
 ## Quick start
 
 ```bash
-cp .env.example .env          # works as-is; add XAI_API_KEY for the real agent
+cp .env.example .env          # works as-is; add GROQ_API_KEY for the real agent
 
 # Backend
 cd backend
@@ -50,7 +50,7 @@ npm run dev                                        # http://localhost:3000
 ```
 
 No keys required to see it work: the mock payment provider and seeded data drive the full flow, and
-the agent falls back to a deterministic stub when `XAI_API_KEY` is absent. Add the Grok key to get
+the agent falls back to a deterministic stub when `GROQ_API_KEY` is absent. Add the Groq key to get
 real triage, scoring, and generated copy.
 
 ## Documentation

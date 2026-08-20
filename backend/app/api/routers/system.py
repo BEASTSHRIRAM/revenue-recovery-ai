@@ -2,7 +2,7 @@
 
 `/health` is the liveness probe. `/capabilities` reports which subsystems are
 running for real versus degraded to a local fallback — the frontend Settings page
-renders this directly, so an operator can see at a glance whether Grok is wired
+renders this directly, so an operator can see at a glance whether Groq is wired
 up, whether emails will actually send, and which payment provider is live.
 """
 
@@ -25,13 +25,13 @@ async def capabilities() -> dict[str, object]:
     """What is live and what is degraded, with a reason for each degradation."""
     return {
         "agent": {
-            "provider": "xai",
-            "model": settings.grok_model,
-            "live": settings.grok_enabled,
-            "mode": "grok" if settings.grok_enabled else "stub",
+            "provider": "groq",
+            "model": settings.groq_model,
+            "live": settings.groq_enabled,
+            "mode": "groq" if settings.groq_enabled else "stub",
             "note": None
-            if settings.grok_enabled
-            else "XAI_API_KEY not set — agent is running deterministic stub reasoning.",
+            if settings.groq_enabled
+            else "GROQ_API_KEY not set — agent is running deterministic stub reasoning.",
         },
         "payments": {
             "configured": settings.payment_provider,
