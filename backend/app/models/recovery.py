@@ -13,7 +13,7 @@ from sqlalchemy import JSON, DateTime, Float, ForeignKey, Index, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.ids import new_id
-from app.db.base import Base, TimestampMixin
+from app.db.base import Base, StrEnumType, TimestampMixin
 from app.models.enums import AttemptKind, AttemptOutcome, CaseStatus, FailureClass
 
 if TYPE_CHECKING:
@@ -40,7 +40,7 @@ class RecoveryCase(Base, TimestampMixin):
     """Raw human-readable decline description from the gateway."""
 
     failure_class: Mapped[FailureClass] = mapped_column(
-        String(32), default=FailureClass.UNKNOWN, index=True
+        StrEnumType(FailureClass, 32), default=FailureClass.UNKNOWN, index=True
     )
     """Normalised failure reason, assigned by the agent's triage node."""
     triage_rationale: Mapped[str | None] = mapped_column(String(500))
@@ -49,7 +49,7 @@ class RecoveryCase(Base, TimestampMixin):
     """0..1 probability estimate that this case is recoverable."""
     score_confidence: Mapped[float | None] = mapped_column(Float)
 
-    status: Mapped[CaseStatus] = mapped_column(String(24), default=CaseStatus.OPEN, index=True)
+    status: Mapped[CaseStatus] = mapped_column(StrEnumType(CaseStatus, 24), default=CaseStatus.OPEN, index=True)
     amount_at_risk_cents: Mapped[int] = mapped_column(Integer)
     currency: Mapped[str] = mapped_column(String(3), default="INR")
     attempt_count: Mapped[int] = mapped_column(Integer, default=0)
@@ -80,10 +80,10 @@ class RecoveryAttempt(Base, TimestampMixin):
         ForeignKey("recovery_cases.id", ondelete="CASCADE"), index=True
     )
 
-    kind: Mapped[AttemptKind] = mapped_column(String(20))
+    kind: Mapped[AttemptKind] = mapped_column(StrEnumType(AttemptKind, 20))
     scheduled_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     executed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    outcome: Mapped[AttemptOutcome] = mapped_column(String(20), default=AttemptOutcome.SCHEDULED)
+    outcome: Mapped[AttemptOutcome] = mapped_column(StrEnumType(AttemptOutcome, 20), default=AttemptOutcome.SCHEDULED)
     provider_response: Mapped[dict[str, Any] | None] = mapped_column(JSON)
     notes: Mapped[str | None] = mapped_column(String(400))
 
@@ -100,7 +100,7 @@ class Playbook(Base, TimestampMixin):
     __tablename__ = "playbooks"
 
     id: Mapped[str] = mapped_column(String(40), primary_key=True, default=lambda: new_id("pbk"))
-    failure_class: Mapped[FailureClass] = mapped_column(String(32), unique=True, index=True)
+    failure_class: Mapped[FailureClass] = mapped_column(StrEnumType(FailureClass, 32), unique=True, index=True)
 
     retry_offsets_hours: Mapped[list[int]] = mapped_column(JSON, default=list)
     channel_ladder: Mapped[list[str]] = mapped_column(JSON, default=list)

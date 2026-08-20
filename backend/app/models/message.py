@@ -9,7 +9,7 @@ from sqlalchemy import JSON, DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.ids import new_id
-from app.db.base import Base, TimestampMixin
+from app.db.base import Base, StrEnumType, TimestampMixin
 from app.models.enums import Channel, MessageStatus
 
 if TYPE_CHECKING:
@@ -24,8 +24,8 @@ class Message(Base, TimestampMixin):
         ForeignKey("recovery_cases.id", ondelete="CASCADE"), index=True
     )
 
-    channel: Mapped[Channel] = mapped_column(String(16))
-    status: Mapped[MessageStatus] = mapped_column(String(16), default=MessageStatus.DRAFT)
+    channel: Mapped[Channel] = mapped_column(StrEnumType(Channel, 16))
+    status: Mapped[MessageStatus] = mapped_column(StrEnumType(MessageStatus, 16), default=MessageStatus.DRAFT)
 
     subject: Mapped[str | None] = mapped_column(String(200))
     body: Mapped[str] = mapped_column(String(4000))

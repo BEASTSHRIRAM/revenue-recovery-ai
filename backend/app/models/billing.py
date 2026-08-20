@@ -15,7 +15,7 @@ from sqlalchemy import DateTime, ForeignKey, Index, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.ids import new_id
-from app.db.base import Base, TimestampMixin
+from app.db.base import Base, StrEnumType, TimestampMixin
 from app.models.enums import InvoiceStatus, SubscriptionStatus
 
 if TYPE_CHECKING:
@@ -75,7 +75,7 @@ class Subscription(Base, TimestampMixin):
     currency: Mapped[str] = mapped_column(String(3), default="INR")
     interval: Mapped[str] = mapped_column(String(16), default="monthly")
     status: Mapped[SubscriptionStatus] = mapped_column(
-        String(24), default=SubscriptionStatus.ACTIVE
+        StrEnumType(SubscriptionStatus, 24), default=SubscriptionStatus.ACTIVE
     )
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     next_billing_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -99,7 +99,7 @@ class Invoice(Base, TimestampMixin):
     number: Mapped[str] = mapped_column(String(40))
     amount_cents: Mapped[int] = mapped_column(Integer)
     currency: Mapped[str] = mapped_column(String(3), default="INR")
-    status: Mapped[InvoiceStatus] = mapped_column(String(24), default=InvoiceStatus.DUE)
+    status: Mapped[InvoiceStatus] = mapped_column(StrEnumType(InvoiceStatus, 24), default=InvoiceStatus.DUE)
     due_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
